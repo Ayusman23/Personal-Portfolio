@@ -98,13 +98,10 @@ ul {
     width:90%;
     margin:0 auto;
     background:var(--bg-black-900);
-    padding: 20px;
 }
 .section .container{
     padding-top:60px;
     padding-bottom:70px;
-    padding-left: 0;
-    left: 0;
 }
 .section-title{
     flex:0 0 100%;
@@ -168,7 +165,7 @@ ul {
     width: 270px;
     background: var(--bg-black-100);
     position: fixed;
-    left: -270px;
+    left: 0;
     top: 0;
     padding: 30px;
     height: 100%;
