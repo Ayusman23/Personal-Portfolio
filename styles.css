@@ -1,20 +1,55 @@
+/* Normalize & Base Setup */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+input, textarea {
+  font-family: inherit;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Clicker+Script:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Clicker+Script:wght@400;700&display=swap');
 
+/* Variables */
 :root {
-    --bg-black-900: #f2f2fc;
-    --bg-black-100: #fdf9ff;
-    --bg-black-50: #e8dfec;
-    --text-black-900: #302e4d;
-    --text-black-700: #504e70;
-    --skin-color: #ff6347;
+  --bg-black-900: #f2f2fc;
+  --bg-black-100: #fdf9ff;
+  --bg-black-50: #e8dfec;
+  --text-black-900: #302e4d;
+  --text-black-700: #504e70;
+  --skin-color: #ff6347;
 }
-body.dark{
-    --bg-black-900: #151515;
-    --bg-black-100: #222222;
-    --bg-black-50: #393939;
-    --text-black-900: #ffffff;
-    --text-black-700: #ece9e9;
+body.dark {
+  --bg-black-900: #151515;
+  --bg-black-100: #222222;
+  --bg-black-50: #393939;
+  --text-black-900: #ffffff;
+  --text-black-700: #ece9e9;
 }
+
 .dark-mode .text-element {
     color: var(--text-black-900);
 }
@@ -739,41 +774,72 @@ h3.my-profession{
     display: none;
   }
 }
-
-/* Mobile devices (max-width: 767px) */
-@media (max-width: 767px) {
-  .contact .contact-form .col-6,
-  .contact .contact-info-item,
-  .portfolio .portfolio-item,
-  .service .service-item,
-  .about .about-content .experience,
-  .about .about-content .education,
-  .about .about-content .skills,
-  .about .about-content .personal-info {
-    flex: 0 0 100%;
-    max-width: 100%;
+* Responsive Breakpoints */
+@media (max-width: 1199.98px) {
+  .container {
+    width: 95%;
+    padding: 20px;
+  }
+  .aside .nav-toggler {
+    display: flex;
   }
 }
 
-/* Small mobile phones (max-width: 480px) */
-@media (max-width: 480px) {
+@media (max-width: 991.98px) {
+  .service .service-item,
+  .portfolio .portfolio-item,
+  .contact .contact-info-item {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .aside {
+    left: -270px;
+  }
+  .aside.open {
+    left: 0;
+  }
+  .section {
+    left: 0;
+  }
+  .aside .nav-toggler {
+    display: flex;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .home .home-info,
+  .about .about-content .skills,
+  .about .about-content .personal-info,
+  .about .about-content .experience,
+  .about .about-content .education,
+  .portfolio .portfolio-item,
+  .service .service-item,
+  .contact .contact-info-item {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .home .home-img {
+    display: none;
+  }
+}
+
+@media (max-width: 575.98px) {
   .container {
     padding: 10px;
   }
-
-  .nav-toggler {
-    left: 10px;
-  }
-
-  .nav-toggler.open {
-    left: 270px;
-  }
-
   .aside {
     width: 100%;
+    left: -100%;
   }
-
-  .section.open {
-    left: 100%;
+  .aside.open {
+    left: 0;
+  }
+  .aside .nav-toggler {
+    display: flex;
+    left: 20px;
+    top: 20px;
+  }
+  .section {
+    left: 0 !important;
   }
 }
