@@ -744,6 +744,9 @@ h3.my-profession{
     padding:0 50px;
 }
 
+/* --- Base Fixes & Mobile Optimization --- */
+
+/* Laptops / Large Tablets (max-width: 1199px) */
 @media (max-width: 1199px) {
   .section .container {
     padding-top: 70px;
@@ -754,46 +757,25 @@ h3.my-profession{
   .main-content {
     padding-left: 0;
   }
-}
-
-/* Tablets & Small laptops (max-width: 991px) */
-@media (max-width: 991px) {
-  .contact .contact-info-item,
-  .portfolio .portfolio-item,
-  .service .service-item {
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-
-  .home .home-info {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-
-  .home .home-img {
-    display: none;
-  }
-}
-* Responsive Breakpoints */
-@media (max-width: 1199.98px) {
   .container {
     width: 95%;
     padding: 20px;
   }
-  .aside .nav-toggler {
-    display: flex;
-  }
 }
 
-@media (max-width: 991.98px) {
+/* Tablets (max-width: 991px) */
+@media (max-width: 991px) {
   .service .service-item,
   .portfolio .portfolio-item,
   .contact .contact-info-item {
     flex: 0 0 50%;
     max-width: 50%;
   }
+
+  /* Fixed Aside Navigation */
   .aside {
     left: -270px;
+    transition: all 0.3s ease;
   }
   .aside.open {
     left: 0;
@@ -801,12 +783,31 @@ h3.my-profession{
   .section {
     left: 0;
   }
+  
+  /* Ensuring Toggle Button is Visible and Aligned */
   .aside .nav-toggler {
     display: flex;
+    position: fixed;
+    right: 20px; /* Moves it to the top right for better reach */
+    top: 20px;
   }
 }
 
-@media (max-width: 767.98px) {
+/* Mobile Phones (max-width: 767px) */
+@media (max-width: 767px) {
+  /* FIXED: Re-enabling the home image for mobile */
+  .home .home-img {
+    display: block; 
+    order: -1; /* Places image above the text */
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .home .home-img img {
+    max-width: 250px; /* Adjust size for mobile */
+    margin: 0 auto;
+  }
+
   .home .home-info,
   .about .about-content .skills,
   .about .about-content .personal-info,
@@ -818,28 +819,31 @@ h3.my-profession{
     flex: 0 0 100%;
     max-width: 100%;
   }
-  .home .home-img {
-    display: none;
-  }
 }
 
-@media (max-width: 575.98px) {
+/* Extra Small Phones (max-width: 575px) */
+@media (max-width: 575px) {
   .container {
-    padding: 10px;
+    padding: 15px;
   }
   .aside {
-    width: 100%;
-    left: -100%;
+    width: 270px; /* Keep width consistent so it doesn't cover whole screen unless desired */
+    left: -270px;
   }
   .aside.open {
     left: 0;
   }
+  
+  /* Navbar Button Alignment Fix */
   .aside .nav-toggler {
-    display: flex;
-    left: 20px;
-    top: 20px;
+    left: auto; 
+    right: 15px;
+    top: 15px;
+    z-index: 100; /* Ensures it stays above content */
   }
+
   .section {
     left: 0 !important;
   }
 }
+
