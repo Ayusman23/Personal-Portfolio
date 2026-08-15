@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: ayusman-portfolio-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: ayusmansamantaray23@gmail.com
+      - key: ADMIN_EMAIL
+        value: ayusmansamantaray23@gmail.com
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: MONGODB_URI
+        sync: false
