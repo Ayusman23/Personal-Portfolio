@@ -110,7 +110,7 @@ export const Sidebar = () => {
               <i className="fa-brands fa-github"></i>
             </a>
             <a
-              href="https://linkedin.com/in/ayusman-samantaray"
+              href="https://www.linkedin.com/in/ayusman-samantaray-153906284/"
               target="_blank"
               rel="noopener noreferrer"
               title="LinkedIn"
