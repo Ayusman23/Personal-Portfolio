@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
 
 import { connectDB } from './config/db.js';
 import { seedInitialData } from './seeds/seedData.js';
@@ -38,6 +39,26 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static assets from public/assets folder if accessed directly
 app.use('/assets', express.static(path.join(__dirname, '../frontend/public/assets')));
 
+// Root route - Instant 200 response for cloud pingers & uptime monitors
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    message: "Ayusman's MERN Portfolio Backend API is live",
+    healthCheck: '/api/health',
+  });
+});
+
+// Health check endpoint - Instant response with DB state
+app.get('/api/health', (req, res) => {
+  const dbConnected = mongoose.connection.readyState === 1;
+  res.status(200).json({
+    status: 'online',
+    database: dbConnected ? 'connected' : 'connecting',
+    timestamp: new Date().toISOString(),
+    message: "Ayusman's MERN Portfolio Backend API is running smoothly.",
+  });
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
@@ -48,15 +69,6 @@ app.use('/api/education', educationRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/certifications', certificationRoutes);
-
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'online',
-    timestamp: new Date().toISOString(),
-    message: "Ayusman's MERN Portfolio Backend API is running smoothly.",
-  });
-});
 
 // Manual Seed / Reset endpoint
 app.post('/api/seed', async (req, res, next) => {
@@ -74,23 +86,23 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-// Start server after connecting to database
+// Start server immediately so health checks pass in <100ms, then connect DB
 const startServer = async () => {
+  const server = app.listen(PORT, () => {
+    console.log(`=========================================`);
+    console.log(` Portfolio Backend Server Running!`);
+    console.log(` Port: ${PORT}`);
+    console.log(` Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(` Health check: http://localhost:${PORT}/api/health`);
+    console.log(`=========================================`);
+  });
+
   try {
     await connectDB();
-    await seedInitialData(true); // Seed with updated SAP & DRDO details
-    
-    app.listen(PORT, () => {
-      console.log(`=========================================`);
-      console.log(` Portfolio Backend Server Running!`);
-      console.log(` Port: ${PORT}`);
-      console.log(` Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(` Health check: http://localhost:${PORT}/api/health`);
-      console.log(`=========================================`);
-    });
+    // Only seed if empty (false) to prevent blocking or wiping database on every boot
+    await seedInitialData(false);
   } catch (err) {
-    console.error('Failed to start server:', err);
-    process.exit(1);
+    console.error('Database connection / seeding notice:', err.message);
   }
 };
 
