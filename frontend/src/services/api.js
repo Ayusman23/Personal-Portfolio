@@ -9,6 +9,7 @@ const API_BASE_URL =
 
 const api = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 35000, // Generous 35s timeout for Render cold starts
   headers: {
     'Content-Type': 'application/json',
   },
@@ -22,6 +23,42 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Cold-start auto-retry interceptor (Retries failed requests while Render wakes up)
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const { config } = error;
+    if (!config || !config.retryCount) {
+      if (config) config.retryCount = 0;
+    }
+
+    // If server is waking up (network error, 502, 503, 504, or timeout)
+    const isColdStart =
+      !error.response ||
+      error.response.status === 502 ||
+      error.response.status === 503 ||
+      error.response.status === 504 ||
+      error.code === 'ECONNABORTED';
+
+    if (isColdStart && config && config.retryCount < 3) {
+      config.retryCount += 1;
+      const delay = config.retryCount * 2500; // 2.5s, 5s, 7.5s
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      return api(config);
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+// Silent background wake-up ping for Render Free tier
+export const wakeUpBackend = async () => {
+  try {
+    const rawHost = API_BASE_URL.replace('/api', '');
+    fetch(`${rawHost}/healthz`, { mode: 'no-cors' }).catch(() => {});
+  } catch (_) {}
+};
 
 // Profile APIs
 export const getProfile = () => api.get('/profile');

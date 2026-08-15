@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { Sidebar } from './components/Sidebar';
 import { StyleSwitcher } from './components/StyleSwitcher';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { wakeUpBackend } from './services/api';
 
 import { Home } from './pages/Home';
 import { About } from './pages/About';
@@ -17,6 +18,11 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import './styles/index.css';
 
 export function App() {
+  useEffect(() => {
+    // Send instant background wake-up ping to Render backend on app load
+    wakeUpBackend();
+  }, []);
+
   return (
     <ThemeProvider>
       <AuthProvider>
