@@ -67,6 +67,7 @@ export const AdminDashboard = () => {
     issuer: 'SAP',
     category: 'SAP',
     issueDate: '2026',
+    credentialUrl: '',
     icon: 'fa-certificate',
   });
 
@@ -665,6 +666,16 @@ export const AdminDashboard = () => {
                     onChange={(e) => setCertForm({ ...certForm, issueDate: e.target.value })}
                   />
                 </div>
+                <div className="form-group">
+                  <label>Verification / Credential URL (Google Drive / Link)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="https://drive.google.com/... or validation link"
+                    value={certForm.credentialUrl}
+                    onChange={(e) => setCertForm({ ...certForm, credentialUrl: e.target.value })}
+                  />
+                </div>
                 <button type="submit" className="btn btn-sm" style={{ width: '100%', justifyContent: 'center' }}>
                   <i className="fa fa-plus"></i>
                   <span>Add Certification</span>
@@ -693,6 +704,18 @@ export const AdminDashboard = () => {
                       <strong style={{ color: 'var(--text-black-900)', fontSize: '14px' }}>{c.title}</strong>
                       <br />
                       <small style={{ color: 'var(--skin-color)' }}>{c.issuer} ({c.category}) • {c.issueDate}</small>
+                      {c.credentialUrl && (
+                        <div style={{ marginTop: '3px' }}>
+                          <a
+                            href={c.credentialUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ fontSize: '11px', color: '#37b182', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                          >
+                            <i className="fa fa-arrow-up-right-from-square"></i> Validation Link Active
+                          </a>
+                        </div>
+                      )}
                     </div>
                     <button className="action-btn delete" onClick={() => handleDeleteCert(c._id)}>
                       <i className="fa fa-trash"></i>

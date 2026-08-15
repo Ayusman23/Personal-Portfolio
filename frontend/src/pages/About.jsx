@@ -152,13 +152,16 @@ export const About = () => {
             {sapCerts.map((cert) => (
               <div
                 key={cert._id}
-                className="glass-card"
+                className="glass-card cert-card-interactive"
+                onClick={() => setSelectedCertificate(cert)}
                 style={{
                   padding: '20px',
                   display: 'flex',
                   alignItems: 'flex-start',
                   gap: '16px',
                   borderLeft: '4px solid var(--skin-color)',
+                  cursor: 'pointer',
+                  position: 'relative',
                 }}
               >
                 <div
@@ -177,13 +180,34 @@ export const About = () => {
                 >
                   <i className={`fa ${cert.icon || 'fa-certificate'}`}></i>
                 </div>
-                <div>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--skin-color)', textTransform: 'uppercase' }}>
-                    {cert.issuer} • {cert.issueDate}
-                  </span>
-                  <h4 style={{ fontSize: '15px', color: 'var(--text-black-900)', marginTop: '4px', lineHeight: '1.4' }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--skin-color)', textTransform: 'uppercase' }}>
+                      {cert.issuer} • {cert.issueDate}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        padding: '2px 8px',
+                        borderRadius: '10px',
+                        background: 'rgba(55, 177, 130, 0.12)',
+                        color: '#37b182',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}
+                    >
+                      <i className="fa fa-circle-check"></i> Verified
+                    </span>
+                  </div>
+                  <h4 style={{ fontSize: '15px', color: 'var(--text-black-900)', marginTop: '6px', lineHeight: '1.4' }}>
                     {cert.title}
                   </h4>
+                  <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'var(--skin-color)', fontWeight: 600 }}>
+                    <span>Click to inspect & validate</span>
+                    <i className="fa fa-arrow-right" style={{ fontSize: '10px' }}></i>
+                  </div>
                 </div>
               </div>
             ))}
@@ -191,13 +215,16 @@ export const About = () => {
             {otherCerts.map((cert) => (
               <div
                 key={cert._id}
-                className="glass-card"
+                className="glass-card cert-card-interactive"
+                onClick={() => setSelectedCertificate(cert)}
                 style={{
                   padding: '20px',
                   display: 'flex',
                   alignItems: 'flex-start',
                   gap: '16px',
                   borderLeft: '4px solid #37b182',
+                  cursor: 'pointer',
+                  position: 'relative',
                 }}
               >
                 <div
@@ -216,13 +243,34 @@ export const About = () => {
                 >
                   <i className={`fa ${cert.icon || 'fa-award'}`}></i>
                 </div>
-                <div>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#37b182', textTransform: 'uppercase' }}>
-                    {cert.issuer} • {cert.issueDate}
-                  </span>
-                  <h4 style={{ fontSize: '15px', color: 'var(--text-black-900)', marginTop: '4px', lineHeight: '1.4' }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#37b182', textTransform: 'uppercase' }}>
+                      {cert.issuer} • {cert.issueDate}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        padding: '2px 8px',
+                        borderRadius: '10px',
+                        background: 'rgba(55, 177, 130, 0.12)',
+                        color: '#37b182',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}
+                    >
+                      <i className="fa fa-circle-check"></i> Verified
+                    </span>
+                  </div>
+                  <h4 style={{ fontSize: '15px', color: 'var(--text-black-900)', marginTop: '6px', lineHeight: '1.4' }}>
                     {cert.title}
                   </h4>
+                  <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#37b182', fontWeight: 600 }}>
+                    <span>Click to inspect & validate</span>
+                    <i className="fa fa-arrow-right" style={{ fontSize: '10px' }}></i>
+                  </div>
                 </div>
               </div>
             ))}

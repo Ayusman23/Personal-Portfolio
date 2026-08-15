@@ -846,6 +846,17 @@ body {
   transition: width 1s ease;
 }
 
+/* Certifications Interactive Card */
+.cert-card-interactive {
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+}
+
+.cert-card-interactive:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25) !important;
+  border-color: var(--skin-color) !important;
+}
+
 /* Timeline Layout */
 .timeline-section-grid {
   display: grid;
