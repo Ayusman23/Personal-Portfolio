@@ -39,16 +39,21 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static assets from public/assets folder if accessed directly
 app.use('/assets', express.static(path.join(__dirname, '../frontend/public/assets')));
 
+// Render standard health check endpoint - Instant 200 response
+app.get('/healthz', (req, res) => {
+  res.status(200).send('OK');
+});
+
 // Root route - Instant 200 response for cloud pingers & uptime monitors
 app.get('/', (req, res) => {
-  res.json({
+  res.status(200).json({
     status: 'online',
     message: "Ayusman's MERN Portfolio Backend API is live",
     healthCheck: '/api/health',
   });
 });
 
-// Health check endpoint - Instant response with DB state
+// API health check endpoint with DB status
 app.get('/api/health', (req, res) => {
   const dbConnected = mongoose.connection.readyState === 1;
   res.status(200).json({
@@ -84,16 +89,16 @@ app.post('/api/seed', async (req, res, next) => {
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = parseInt(process.env.PORT, 10) || 5000;
 
-// Start server immediately so health checks pass in <100ms, then connect DB
+// Start server immediately on 0.0.0.0 so Render's internal /healthz probe connects in <10ms
 const startServer = async () => {
-  const server = app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`=========================================`);
     console.log(` Portfolio Backend Server Running!`);
-    console.log(` Port: ${PORT}`);
+    console.log(` Host: 0.0.0.0 | Port: ${PORT}`);
     console.log(` Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(` Health check: http://localhost:${PORT}/api/health`);
+    console.log(` Health check: http://0.0.0.0:${PORT}/healthz`);
     console.log(`=========================================`);
   });
 
