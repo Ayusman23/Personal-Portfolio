@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
+    "build": "node -e \"console.log('Backend build ready')\"",
     "dev": "nodemon server.js",
     "seed": "node seeds/runSeed.js"
   },
