@@ -14,17 +14,214 @@ dotenv.config();
 export const seedInitialData = async (force = false) => {
   try {
     const projectCount = await Project.countDocuments();
+
+    // The authoritative list of projects with accurate screenshots
+    const projects = [
+      {
+        title: 'Enterprise Procurement & Purchase Approval Platform',
+        description: 'Developed a Purchase Requisition workflow using ABAP RAP with multi-level approvals, custom Actions, Determinations, and Validations. Built CDS Views and exposed OData V4 services to create reusable enterprise data models and delivered a SAP Fiori Elements application with RBAC.',
+        category: 'Full Stack',
+        image: '/assets/Enterprise-Procurement-Purchase-Approval-Platform.png',
+        gitLink: 'https://github.com/Ayusman23',
+        liveLink: '',
+        tags: ['ABAP Cloud', 'SAP RAP', 'CDS Views', 'SAP Fiori', 'OData V4', 'SAP BTP'],
+        featured: true,
+        order: 1,
+      },
+      {
+        title: 'AI-Powered Workforce Leave & Capacity Planning',
+        description: 'Developed an intelligent leave management and workforce planning solution using SAP Generative AI, ABAP RAP, and SAP BTP. Implemented predictive workforce capacity insights using CDS Views and RAP Business Objects, and built a SAP Fiori dashboard providing AI-driven recommendations.',
+        category: 'Full Stack',
+        image: '/assets/AI-Powered-Workforce-Leave-Capacity-Planning.png',
+        gitLink: 'https://github.com/Ayusman23',
+        liveLink: '',
+        tags: ['SAP Generative AI', 'SAP BTP', 'ABAP Cloud', 'SAP RAP', 'CDS Views', 'SAP Fiori'],
+        featured: true,
+        order: 2,
+      },
+      {
+        title: 'Enterprise IT Asset Lifecycle Management',
+        description: 'Developed an end-to-end IT asset lifecycle solution covering procurement, allocation, maintenance, and retirement. Built RAP Business Objects, CDS Views, and SAP HANA analytics to support predictive maintenance and lifecycle tracking with real-time alerts.',
+        category: 'Full Stack',
+        image: '/assets/Enterprise-IT-Asset-Lifecycle-Management.jpg',
+        gitLink: 'https://github.com/Ayusman23',
+        liveLink: '',
+        tags: ['ABAP Cloud', 'SAP RAP', 'SAP HANA', 'SAP Fiori', 'SAP BTP'],
+        featured: true,
+        order: 3,
+      },
+      {
+        title: 'ITR DRDO Canteen Management System',
+        description: 'Constructed an enterprise Canteen Management System for Integrated Test Range (ITR), DRDO Chandipur using ASP.NET MVC, MySQL, and JavaScript. Unified inventory tracking, automated billing, and 4-tier Role-Based Access Control (Admin, Manager, Staff, User), cutting manual billing effort by 60%.',
+        category: 'Full Stack',
+        image: '/assets/portfolio.11.png',
+        gitLink: 'https://github.com/Ayusman23/Canteen-Manangement-System-DRDO.git',
+        liveLink: '',
+        tags: ['ASP.NET MVC', 'MySQL', 'JavaScript', 'RBAC', 'DRDO ITR'],
+        featured: true,
+        order: 4,
+      },
+      {
+        title: 'AI Virtual Assistant (Desktop Automation)',
+        description: 'Constructed an end-to-end voice processing pipeline using Speech-Recognition and NLP with 92% command accuracy across 15+ tasks. Includes 50+ predefined commands for desktop automation, cutting manual execution time by 35%.',
+        category: 'Utility Apps',
+        image: '/assets/Ai-Virtual-Assistant.png',
+        gitLink: 'https://github.com/Ayusman23/AI-Virtual-Assistant.git',
+        liveLink: '',
+        tags: ['Python', 'Machine Learning', 'Speech Recognition', 'NLP', 'Automation'],
+        featured: true,
+        order: 5,
+      },
+      {
+        title: 'Automated Invoice Generator & Billing Platform',
+        description: 'Architected a modern automated invoice generation and client billing platform featuring dynamic PDF generation, recurring billing schedules, tax calculations, and real-time revenue analytics dashboard.',
+        category: 'Utility Apps',
+        image: '/assets/automated-invoice-generator.png',
+        gitLink: 'https://github.com/Ayusman23',
+        liveLink: '',
+        tags: ['React.js', 'Node.js', 'Express.js', 'PDF Generation', 'MongoDB'],
+        featured: true,
+        order: 6,
+      },
+      {
+        title: 'Code Sentinel - AI Code Security & Vulnerability Analyzer',
+        description: 'Built an automated static code analysis and security auditing engine that inspects source repositories for AST vulnerability patterns, syntax regressions, and automated remediation suggestions.',
+        category: 'Utility Apps',
+        image: '/assets/code-sentinel.png',
+        gitLink: 'https://github.com/Ayusman23',
+        liveLink: '',
+        tags: ['JavaScript', 'Python', 'AI/ML', 'Security Analysis', 'AST', 'Node.js'],
+        featured: true,
+        order: 7,
+      },
+      {
+        title: 'HAL Mail.me Email Automation Platform',
+        description: 'Full-stack email automation and communication platform built during internship at Hindustan Aeronautics Limited. Features email queue management, delivery tracking, and high-throughput Express REST APIs handling 500+ requests/min.',
+        category: 'Full Stack',
+        image: '/assets/portfolio.2.png',
+        gitLink: 'https://github.com/Ayusman23/HAL-Mail-me-Project.git',
+        liveLink: '',
+        tags: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT Auth', 'HAL'],
+        featured: true,
+        order: 8,
+      },
+      {
+        title: 'Disease Prediction & Doctor Recommendation System',
+        description: 'Integrated a Python ML engine (Random Forest + SVM with 85%+ accuracy across 40+ symptoms) with a MERN web layer, providing automated diagnostics, doctor recommendations, and JWT stateless authentication with RBAC.',
+        category: 'Full Stack',
+        image: '/assets/portfolio.9.png',
+        gitLink: 'https://github.com/Ayusman23/Disease-Prediction-Doctor-Recommendation-App.git',
+        liveLink: '',
+        tags: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'Python', 'Scikit-learn'],
+        featured: true,
+        order: 9,
+      },
+      {
+        title: '360 Event Management Planning Platform',
+        description: 'Full-featured event management platform with real-time booking sync, admin dashboard, AWS S3 image uploads, and Stripe payment processing.',
+        category: 'Event Management',
+        image: '/assets/portfolio.12.png',
+        gitLink: 'https://github.com/Ayusman23/CBTC-360-Event-Management-Planning-Webpage.git',
+        liveLink: '',
+        tags: ['MERN Stack', 'Stripe API', 'AWS S3', 'CloudFront'],
+        featured: true,
+        order: 10,
+      },
+    ];
+
+    const defaultCertDrive = 'https://drive.google.com/drive/folders/1W_p-7lCT-Yum6X0JiToYrypBppu7IcO3?usp=sharing';
+
+    const experiences = [
+      {
+        title: 'Web Development Intern',
+        company: 'Hindustan Aeronautics Limited (HAL), Sunabeda, Koraput',
+        period: 'June 2024 – July 2024 (Onsite)',
+        location: 'Sunabeda, Koraput, Odisha',
+        description: 'Developed a full-stack email automation platform using React, Node.js (Express.js), and MongoDB; eliminated repetitive manual steps and cut communication processing time by 40%. Implemented REST APIs with Express.js middleware for email processing and JWT-based authentication; handled 500+ email requests per minute under load and maintained 99.5% uptime.',
+        certificateUrl: '/assets/Hal.pdf',
+        offerLetterUrl: '',
+        order: 1,
+      },
+      {
+        title: 'Web Research & Development Intern (Vocational Training)',
+        company: 'Integrated Test Range (ITR), DRDO, Balasore',
+        period: 'June 2025 – July 2025 (Onsite - 30 Days)',
+        location: 'Chandipur, Balasore, Odisha',
+        description: "Constructed a Canteen Management System using ASP.NET MVC, MySQL, and JavaScript in the Directorate of Campus Area Network & Data Centre under the guidance of Shri Antaryami Patra, Scientist-'E'. Designed a normalized relational database with 12+ tables and implemented 4-tier Role-Based Access Control (RBAC). Automated billing with configurable discount and payment logic, cutting manual billing effort by 60%.",
+        certificateUrl: '/assets/DRDO_final_CERTIFICATE.pdf',
+        offerLetterUrl: '',
+        order: 2,
+      },
+      {
+        title: 'SAP S/4HANA Backend Developer Intern',
+        company: 'SAP Partner EME & OSDA',
+        period: 'May 2026 – June 2026',
+        location: 'Bhubaneswar, Odisha',
+        description: 'Developed SAP RAP applications using ABAP Cloud, CDS Views, OData V4, and SAP Fiori. Worked with SAP BTP and Clean Core principles for enterprise application development.',
+        certificateUrl: '',
+        offerLetterUrl: '',
+        order: 3,
+      },
+    ];
+
     if (projectCount > 0 && !force) {
-      console.log('Database already contains data, skipping auto-seed.');
+      console.log('Database already contains data. Synchronizing project images and assets...');
+      
+      // Auto-sync project images and missing projects
+      for (const proj of projects) {
+        const existing = await Project.findOne({ title: proj.title });
+        if (existing) {
+          if (existing.image !== proj.image) {
+            existing.image = proj.image;
+            await existing.save();
+            console.log(`Updated image for project: ${proj.title} -> ${proj.image}`);
+          }
+        } else {
+          await Project.create(proj);
+          console.log(`Inserted new project: ${proj.title}`);
+        }
+      }
+
+      // Sync experience certificates
+      for (const exp of experiences) {
+        const existingExp = await Experience.findOne({ company: exp.company });
+        if (existingExp) {
+          if (existingExp.certificateUrl !== exp.certificateUrl) {
+            existingExp.certificateUrl = exp.certificateUrl;
+            await existingExp.save();
+            console.log(`Updated certificateUrl for experience: ${exp.company}`);
+          }
+        }
+      }
+
+      // Sync profile documents
+      const profile = await Profile.findOne({});
+      if (profile) {
+        let modified = false;
+        if (profile.resumeUrl !== '/assets/Ayusman_Samantaray_Resume.pdf') {
+          profile.resumeUrl = '/assets/Ayusman_Samantaray_Resume.pdf';
+          modified = true;
+        }
+        if (profile.avatarUrl !== '/assets/My.jpg') {
+          profile.avatarUrl = '/assets/My.jpg';
+          modified = true;
+        }
+        if (modified) {
+          await profile.save();
+          console.log('Synchronized profile resume and avatar paths');
+        }
+      }
+
+      console.log('Project images and asset references successfully synchronized.');
       return;
     }
 
-    console.log('Seeding updated SAP, DRDO, HAL portfolio data into MongoDB...');
+    console.log('Performing full seed of SAP, DRDO, HAL, and AI portfolio data into MongoDB...');
 
     // 1. Seed Admin User
-    const adminUsername = process.env.ADMIN_USERNAME || 'admin';
-    const adminEmail = process.env.ADMIN_EMAIL || 'ayusman2348@gmail.com';
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const adminUsername = process.env.ADMIN_USERNAME || 'ayusmansamantaray23@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'ayusmansamantaray23@gmail.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'Ayusman@2024#AdminSecure';
 
     await User.deleteMany({});
     await User.create({
@@ -64,7 +261,6 @@ export const seedInitialData = async (force = false) => {
 
     // 3. Seed Certifications (SAP & Technical Credentials)
     await Certification.deleteMany({});
-    const defaultCertDrive = 'https://drive.google.com/drive/folders/1W_p-7lCT-Yum6X0JiToYrypBppu7IcO3?usp=sharing';
     const certifications = [
       {
         title: 'SAP Certified – Solution Architect – SAP BTP',
@@ -190,7 +386,7 @@ export const seedInitialData = async (force = false) => {
       },
       {
         degree: 'Higher Secondary (Class XII - Science in PCMB)',
-        institution: "Talents Higher Secondary School of Science & Technology, Koraput",
+        institution: 'Talents Higher Secondary School of Science & Technology, Koraput',
         period: '2020 – 2022',
         score: '79%',
         description: 'Completed Class XII in Science under the C.H.S.E board with 79% score.',
@@ -207,40 +403,8 @@ export const seedInitialData = async (force = false) => {
     ];
     await Education.insertMany(educations);
 
-    // 6. Seed Experience (Only HAL, DRDO ITR, and SAP S/4HANA Internships)
+    // 6. Seed Experience (HAL, DRDO ITR, and SAP S/4HANA Internships)
     await Experience.deleteMany({});
-    const experiences = [
-      {
-        title: 'Web Development Intern',
-        company: 'Hindustan Aeronautics Limited (HAL), Sunabeda, Koraput',
-        period: 'June 2024 – July 2024 (Onsite)',
-        location: 'Sunabeda, Koraput, Odisha',
-        description: 'Developed a full-stack email automation platform using React, Node.js (Express.js), and MongoDB; eliminated repetitive manual steps and cut communication processing time by 40%. Implemented REST APIs with Express.js middleware for email processing and JWT-based authentication; handled 500+ email requests per minute under load and maintained 99.5% uptime.',
-        certificateUrl: '/assets/Hal.pdf',
-        offerLetterUrl: '',
-        order: 1,
-      },
-      {
-        title: 'Web Research & Development Intern (Vocational Training)',
-        company: 'Integrated Test Range (ITR), DRDO, Balasore',
-        period: 'June 2025 – July 2025 (Onsite - 30 Days)',
-        location: 'Chandipur, Balasore, Odisha',
-        description: 'Constructed a Canteen Management System using ASP.NET MVC, MySQL, and JavaScript in the Directorate of Campus Area Network & Data Centre under the guidance of Shri Antaryami Patra, Scientist-\'E\'. Designed a normalized relational database with 12+ tables and implemented 4-tier Role-Based Access Control (RBAC). Automated billing with configurable discount and payment logic, cutting manual billing effort by 60%.',
-        certificateUrl: '/assets/ITR_DRDO_Certificate.pdf',
-        offerLetterUrl: '',
-        order: 2,
-      },
-      {
-        title: 'SAP S/4HANA Backend Developer Intern',
-        company: 'SAP Partner EME & OSDA',
-        period: 'May 2026 – June 2026',
-        location: 'Bhubaneswar, Odisha',
-        description: 'Developed SAP RAP applications using ABAP Cloud, CDS Views, OData V4, and SAP Fiori. Worked with SAP BTP and Clean Core principles for enterprise application development.',
-        certificateUrl: '',
-        offerLetterUrl: '',
-        order: 3,
-      },
-    ];
     await Experience.insertMany(experiences);
 
     // 7. Seed Services
@@ -285,98 +449,8 @@ export const seedInitialData = async (force = false) => {
     ];
     await Service.insertMany(services);
 
-    // 8. Seed Projects (Updated with SAP, ITR DRDO, HAL, and AI projects)
+    // 8. Seed Projects
     await Project.deleteMany({});
-    const projects = [
-      {
-        title: 'Enterprise Procurement & Purchase Approval Platform',
-        description: 'Developed a Purchase Requisition workflow using ABAP RAP with multi-level approvals, custom Actions, Determinations, and Validations. Built CDS Views and exposed OData V4 services to create reusable enterprise data models and delivered a SAP Fiori Elements application with RBAC.',
-        category: 'Full Stack',
-        image: '/assets/portfolio.6.png',
-        gitLink: 'https://github.com/Ayusman23',
-        liveLink: '',
-        tags: ['ABAP Cloud', 'SAP RAP', 'CDS Views', 'SAP Fiori', 'OData V4', 'SAP BTP'],
-        featured: true,
-        order: 1,
-      },
-      {
-        title: 'AI-Powered Workforce Leave & Capacity Planning',
-        description: 'Developed an intelligent leave management and workforce planning solution using SAP Generative AI, ABAP RAP, and SAP BTP. Implemented predictive workforce capacity insights using CDS Views and RAP Business Objects, and built a SAP Fiori dashboard providing AI-driven recommendations.',
-        category: 'Full Stack',
-        image: '/assets/portfolio.3.png',
-        gitLink: 'https://github.com/Ayusman23',
-        liveLink: '',
-        tags: ['SAP Generative AI', 'SAP BTP', 'ABAP Cloud', 'SAP RAP', 'CDS Views', 'SAP Fiori'],
-        featured: true,
-        order: 2,
-      },
-      {
-        title: 'Enterprise IT Asset Lifecycle Management',
-        description: 'Developed an end-to-end IT asset lifecycle solution covering procurement, allocation, maintenance, and retirement. Built RAP Business Objects, CDS Views, and SAP HANA analytics to support predictive maintenance and lifecycle tracking with real-time alerts.',
-        category: 'Full Stack',
-        image: '/assets/portfolio.8.png',
-        gitLink: 'https://github.com/Ayusman23',
-        liveLink: '',
-        tags: ['ABAP Cloud', 'SAP RAP', 'SAP HANA', 'SAP Fiori', 'SAP BTP'],
-        featured: true,
-        order: 3,
-      },
-      {
-        title: 'ITR DRDO Canteen Management System',
-        description: 'Constructed an enterprise Canteen Management System for Integrated Test Range (ITR), DRDO Chandipur using ASP.NET MVC, MySQL, and JavaScript. Unified inventory tracking, automated billing, and 4-tier Role-Based Access Control (Admin, Manager, Staff, User), cutting manual billing effort by 60%.',
-        category: 'Full Stack',
-        image: '/assets/portfolio.11.png',
-        gitLink: 'https://github.com/Ayusman23/Canteen-Manangement-System-DRDO.git',
-        liveLink: '',
-        tags: ['ASP.NET MVC', 'MySQL', 'JavaScript', 'RBAC', 'DRDO ITR'],
-        featured: true,
-        order: 4,
-      },
-      {
-        title: 'HAL Mail.me Email Automation Platform',
-        description: 'Full-stack email automation and communication platform built during internship at Hindustan Aeronautics Limited. Features email queue management, delivery tracking, and high-throughput Express REST APIs handling 500+ requests/min.',
-        category: 'Full Stack',
-        image: '/assets/portfolio.2.png',
-        gitLink: 'https://github.com/Ayusman23/HAL-Mail-me-Project.git',
-        liveLink: '',
-        tags: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT Auth', 'HAL'],
-        featured: true,
-        order: 5,
-      },
-      {
-        title: 'AI Virtual Assistant (Desktop Automation)',
-        description: 'Constructed an end-to-end voice processing pipeline using Speech-Recognition and NLP with 92% command accuracy across 15+ tasks. Includes 50+ predefined commands for desktop automation, cutting manual execution time by 35%.',
-        category: 'Utility Apps',
-        image: '/assets/portfolio.7.png',
-        gitLink: 'https://github.com/Ayusman23/AI-Virtual-Assistant.git',
-        liveLink: '',
-        tags: ['Python', 'Machine Learning', 'Speech Recognition', 'NLP', 'Automation'],
-        featured: true,
-        order: 6,
-      },
-      {
-        title: 'Disease Prediction & Doctor Recommendation System',
-        description: 'Integrated a Python ML engine (Random Forest + SVM with 85%+ accuracy across 40+ symptoms) with a MERN web layer, providing automated diagnostics, doctor recommendations, and JWT stateless authentication with RBAC.',
-        category: 'Full Stack',
-        image: '/assets/portfolio.9.png',
-        gitLink: 'https://github.com/Ayusman23/Disease-Prediction-Doctor-Recommendation-App.git',
-        liveLink: '',
-        tags: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'Python', 'Scikit-learn'],
-        featured: true,
-        order: 7,
-      },
-      {
-        title: '360 Event Management Planning Platform',
-        description: 'Full-featured event management platform with real-time booking sync, admin dashboard, AWS S3 image uploads, and Stripe payment processing.',
-        category: 'Event Management',
-        image: '/assets/portfolio.12.png',
-        gitLink: 'https://github.com/Ayusman23/CBTC-360-Event-Management-Planning-Webpage.git',
-        liveLink: '',
-        tags: ['MERN Stack', 'Stripe API', 'AWS S3', 'CloudFront'],
-        featured: true,
-        order: 8,
-      },
-    ];
     await Project.insertMany(projects);
 
     console.log('Portfolio database seeded successfully with updated SAP, DRDO, HAL, and AI portfolio data!');
